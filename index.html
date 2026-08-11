@@ -3,12 +3,12 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Robot Programming ROI Calculator</title>
+<title>Robot Programming ROI Calculator — Augmentus</title>
 <style>
   :root{
     --bg:#0e1116; --panel:#161b22; --panel-2:#1c2230; --line:#2a3140;
     --text:#e8edf4; --muted:#9aa7b8; --faint:#6b7788;
-    --accent:#2fd6a5; --accent-ink:#0e1116; --blue:#4a9df0;
+    --accent:#2fd6a5; --accent-ink:#0e1116; --blue:#4a9df0; --red:#f0776b;
   }
   *{box-sizing:border-box;}
   body{
@@ -16,11 +16,13 @@
     font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
     line-height:1.6; -webkit-font-smoothing:antialiased;
   }
-  .wrap{max-width:920px; margin:0 auto; padding:40px 20px 60px;}
-  .brand{display:flex; align-items:center; gap:10px; font-size:14px; color:var(--muted); letter-spacing:.02em; margin-bottom:28px;}
-  .dot{width:9px; height:9px; border-radius:50%; background:var(--accent);}
+  .wrap{max-width:920px; margin:0 auto; padding:36px 20px 60px;}
+  .topbar{display:flex; align-items:center; gap:14px; margin-bottom:30px;}
+  .logo-chip{background:#fff; border-radius:8px; padding:7px 13px; display:inline-flex; align-items:center;}
+  .logo-chip img{height:24px; display:block;}
+  .kicker{font-size:13px; color:var(--muted); letter-spacing:.06em; text-transform:uppercase;}
   h1{font-size:30px; font-weight:600; margin:0 0 8px; letter-spacing:-.01em;}
-  .sub{color:var(--muted); font-size:16px; max-width:620px; margin:0 0 32px;}
+  .sub{color:var(--muted); font-size:16px; max-width:640px; margin:0 0 32px;}
   .grid{display:grid; grid-template-columns:1fr 1fr; gap:24px;}
   @media (max-width:760px){.grid{grid-template-columns:1fr;}}
   .card{background:var(--panel); border:1px solid var(--line); border-radius:14px; padding:24px;}
@@ -31,13 +33,16 @@
   .field{margin-bottom:20px;}
   .field:last-child{margin-bottom:0;}
   .flabel{display:flex; justify-content:space-between; align-items:baseline; font-size:13.5px; color:var(--muted); margin-bottom:8px;}
-  .flabel b{color:var(--text); font-weight:600; font-size:15px; font-variant-numeric:tabular-nums;}
+  .flabel span{padding-right:10px;}
+  .flabel b{color:var(--text); font-weight:600; font-size:15px; font-variant-numeric:tabular-nums; white-space:nowrap;}
   input[type=range]{width:100%; -webkit-appearance:none; appearance:none; height:4px; border-radius:4px; background:var(--line); outline:none;}
   input[type=range]::-webkit-slider-thumb{-webkit-appearance:none; width:18px; height:18px; border-radius:50%; background:var(--accent); cursor:pointer; border:3px solid var(--bg);}
   input[type=range]::-moz-range-thumb{width:16px; height:16px; border-radius:50%; background:var(--accent); cursor:pointer; border:3px solid var(--bg);}
+  .aug-divider{border:0; border-top:1px dashed var(--line); margin:22px 0;}
+  .aug-tag{font-size:11px; letter-spacing:.08em; text-transform:uppercase; color:var(--accent); font-weight:600; margin-bottom:16px;}
   .hero{background:linear-gradient(180deg,var(--panel-2),var(--panel)); border:1px solid var(--line); border-radius:14px; padding:24px; margin-bottom:16px;}
   .hero .lbl{font-size:13px; text-transform:uppercase; letter-spacing:.08em; color:var(--faint); font-weight:600;}
-  .hero .big{font-size:46px; font-weight:700; letter-spacing:-.02em; color:var(--accent); font-variant-numeric:tabular-nums; margin:6px 0 2px;}
+  .hero .big{font-size:44px; font-weight:700; letter-spacing:-.02em; color:var(--accent); font-variant-numeric:tabular-nums; margin:6px 0 2px;}
   .hero .pay{font-size:14px; color:var(--muted);}
   .hero .pay b{color:var(--text); font-weight:600;}
   .mets{display:grid; grid-template-columns:1fr 1fr 1fr; gap:12px;}
@@ -45,13 +50,19 @@
   .met{background:var(--panel); border:1px solid var(--line); border-radius:10px; padding:14px 16px;}
   .met .k{font-size:12px; color:var(--faint); margin-bottom:4px;}
   .met .val{font-size:20px; font-weight:600; font-variant-numeric:tabular-nums;}
-  .note{font-size:12.5px; color:var(--faint); line-height:1.7; margin-top:24px; border-top:1px solid var(--line); padding-top:18px;}
+  .cta{display:flex; align-items:center; justify-content:center; gap:8px; margin-top:18px; background:var(--accent); color:var(--accent-ink); text-decoration:none; font-weight:600; font-size:15px; padding:13px 18px; border-radius:10px; transition:.15s;}
+  .cta:hover{filter:brightness(1.08);}
+  .note{font-size:12.5px; color:var(--faint); line-height:1.7; margin-top:22px; border-top:1px solid var(--line); padding-top:18px;}
   .baseline-hint{font-size:12.5px; color:var(--blue); margin:-12px 0 20px;}
 </style>
 </head>
 <body>
 <div class="wrap">
-  <div class="brand"><span class="dot"></span> AUGMENTUS &nbsp;·&nbsp; ROI CALCULATOR</div>
+  <div class="topbar">
+    <span class="logo-chip"><img src="https://www.augmentus.tech/media/uploads/2024/12/Augmentus-logo-x2.webp" alt="Augmentus" /></span>
+    <span class="kicker">ROI Calculator</span>
+  </div>
+
   <h1>What is manual robot programming costing you?</h1>
   <p class="sub">Estimate the annual savings and payback from replacing hand-programming with Augmentus no-code, scan-to-path software. Adjust the inputs to match your operation.</p>
 
@@ -66,24 +77,32 @@
       <p class="baseline-hint" id="hint">Baseline: an operator jogs the robot point-by-point. The robot is offline during programming.</p>
 
       <div class="field">
-        <div class="flabel"><span>Part variants programmed / year</span><b id="v-parts">200</b></div>
-        <input type="range" id="parts" min="20" max="1000" step="10" value="200" />
+        <div class="flabel"><span>Part variants programmed / week</span><b id="v-parts">5</b></div>
+        <input type="range" id="parts" min="1" max="60" step="1" value="5" />
       </div>
       <div class="field">
         <div class="flabel"><span>Programming time per part today</span><b id="v-old">8 hrs</b></div>
         <input type="range" id="old" min="1" max="40" step="1" value="8" />
       </div>
-      <div class="field">
-        <div class="flabel"><span>Augmentus time per part</span><b id="v-new">30 min</b></div>
-        <input type="range" id="new" min="10" max="120" step="5" value="30" />
+      <div class="field" id="field-reworks" style="display:none;">
+        <div class="flabel"><span>Rework passes per part (poor CAD fit)</span><b id="v-rework">1</b></div>
+        <input type="range" id="rework" min="0" max="5" step="1" value="1" />
       </div>
       <div class="field">
-        <div class="flabel"><span>Loaded programmer cost / hr</span><b id="v-rate">$75</b></div>
+        <div class="flabel"><span>Fully-loaded labor rate / hr</span><b id="v-rate">$75</b></div>
         <input type="range" id="rate" min="30" max="150" step="5" value="75" />
       </div>
       <div class="field">
         <div class="flabel"><span>Robot idle cost while programming / hr</span><b id="v-down">$120</b></div>
         <input type="range" id="down" min="0" max="400" step="10" value="120" />
+      </div>
+
+      <hr class="aug-divider" />
+      <div class="aug-tag">With Augmentus</div>
+
+      <div class="field">
+        <div class="flabel"><span>Augmentus time per part</span><b id="v-new">30 min</b></div>
+        <input type="range" id="new" min="10" max="120" step="5" value="30" />
       </div>
       <div class="field">
         <div class="flabel"><span>Augmentus annual license cost</span><b id="v-lic">$40,000</b></div>
@@ -103,7 +122,10 @@
         <div class="met"><div class="k">Time reduction</div><div class="val" id="o-pct">0%</div></div>
         <div class="met"><div class="k">Uptime recovered</div><div class="val" id="o-up">0 hrs</div></div>
       </div>
-      <p class="note">Estimate only, for illustration. Labor savings = hours saved × loaded programmer rate. Uptime value = hours the robot returns to production instead of sitting idle during programming (applies mainly to the teach-pendant baseline). Net savings subtract the annual Augmentus license; payback = license ÷ monthly gross savings. Against an offline-programming baseline the time gain is smaller — the durable wins are no CAD required, no specialist, and adaptivity to the real part.</p>
+
+      <a class="cta" href="https://account.augmentus.tech/register" target="_blank" rel="noopener">Start your free trial &#8599;</a>
+
+      <p class="note">Estimate only, for illustration. Labor savings = hours saved &times; fully-loaded labor rate. Uptime value = hours the robot returns to production instead of sitting idle during programming (mainly the teach-pendant baseline). For offline programming, each rework pass from CAD-to-part mismatch is modeled as roughly one extra programming cycle; Augmentus's scan-and-adapt approach removes those reworks. Net savings subtract the annual Augmentus license; payback = license &divide; monthly gross savings.</p>
     </div>
   </div>
 </div>
@@ -113,35 +135,45 @@
   var money=new Intl.NumberFormat('en-US',{style:'currency',currency:'USD',maximumFractionDigits:0});
   var num=new Intl.NumberFormat('en-US');
   var g=function(id){return document.getElementById(id);};
+  var base='teach';
   var presets={
     teach:{old:8, down:120, hint:"Baseline: an operator jogs the robot point-by-point. The robot is offline during programming."},
-    olp:{old:3, down:0, hint:"Baseline: a programmer builds the path offline from CAD. The robot keeps running, so idle cost is low — the real wins are no CAD and adaptivity."}
+    olp:{old:3, down:0, hint:"Baseline: a programmer builds the path offline from CAD. The robot keeps running, but a nominal CAD model rarely matches the real part — so reworks pile up. Augmentus adapts to the actual part and removes them."}
   };
   function setBase(b){
+    base=b;
     g('old').value=presets[b].old;
     g('down').value=presets[b].down;
     g('hint').textContent=presets[b].hint;
+    g('field-reworks').style.display = (b==='olp') ? 'block' : 'none';
     Array.prototype.forEach.call(document.querySelectorAll('#seg button'),function(btn){
       btn.classList.toggle('on', btn.getAttribute('data-base')===b);
     });
     calc();
   }
   function calc(){
-    var parts=+g('parts').value, oldH=+g('old').value, newM=+g('new').value,
+    var partsWk=+g('parts').value, oldH=+g('old').value, newM=+g('new').value,
         rate=+g('rate').value, down=+g('down').value, lic=+g('lic').value;
-    g('v-parts').textContent=num.format(parts);
+    var reworks = (base==='olp') ? +g('rework').value : 0;
+    g('v-parts').textContent=num.format(partsWk);
     g('v-old').textContent=oldH+' hrs';
+    g('v-rework').textContent=reworks;
     g('v-new').textContent=newM+' min';
     g('v-rate').textContent=money.format(rate);
     g('v-down').textContent=money.format(down);
     g('v-lic').textContent=money.format(lic);
-    var oldHrs=parts*oldH, newHrs=parts*(newM/60);
+
+    var annualParts=partsWk*52;
+    var oldPer=oldH*(1+reworks);
+    var oldHrs=annualParts*oldPer;
+    var newHrs=annualParts*(newM/60);
     var saved=Math.max(0,oldHrs-newHrs);
     var gross=saved*rate + saved*down;
     var net=gross-lic;
     var pct=oldHrs>0?Math.round((saved/oldHrs)*100):0;
+
     g('o-total').textContent=money.format(net);
-    g('o-total').style.color = net>=0 ? 'var(--accent)' : '#f0776b';
+    g('o-total').style.color = net>=0 ? 'var(--accent)' : 'var(--red)';
     g('o-hrs').textContent=num.format(Math.round(saved));
     g('o-pct').textContent=pct+'%';
     g('o-up').textContent=num.format(Math.round(saved))+' hrs';
@@ -150,7 +182,7 @@
       g('o-pay').textContent = months<1 ? 'under 1 month' : (months<=24 ? Math.round(months)+' months' : 'over 2 years');
     } else { g('o-pay').textContent='–'; }
   }
-  ['parts','old','new','rate','down','lic'].forEach(function(id){g(id).addEventListener('input',calc);});
+  ['parts','old','rework','new','rate','down','lic'].forEach(function(id){g(id).addEventListener('input',calc);});
   Array.prototype.forEach.call(document.querySelectorAll('#seg button'),function(btn){
     btn.addEventListener('click',function(){setBase(btn.getAttribute('data-base'));});
   });
